@@ -1,0 +1,20 @@
+<!-- All Javascripts -->
+<script src="{{ asset('dist-front/js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/jquery-ui.js') }}"></script>
+<script src="{{ asset('dist-front/js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/wow.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/select2.full.js') }}"></script>
+<script src="{{ asset('dist-front/js/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/jquery.waypoints.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/acmeticker.js') }}"></script>
+<script src="{{ asset('dist-front/js/moment.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/daterangepicker.min.js') }}"></script>
+<script src="{{ asset('dist-front/js/sticky_sidebar.js') }}"></script>
+<script src="{{ asset('dist-front/js/jquery.meanmenu.js') }}"></script>
+<script src="{{ asset('dist-front/js/iziToast.min.js') }}"></script>
+
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
