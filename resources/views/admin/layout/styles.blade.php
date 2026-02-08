@@ -53,6 +53,21 @@ body {
     color: var(--primary-gold) !important;
 }
 
+/* Admin Name Styling */
+.main-navbar .nav-link-user .d-sm-none {
+    color: var(--primary-navy) !important;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+.main-navbar .nav-link-user:hover .d-sm-none {
+    background: var(--primary-gold);
+    color: white !important;
+}
+
 .main-navbar .btn-warning {
     background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark)) !important;
     border: none !important;
