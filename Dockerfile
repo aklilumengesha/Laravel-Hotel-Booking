@@ -18,7 +18,9 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     nano \
     nginx \
-    supervisor
+    supervisor \
+    nodejs \
+    npm
 
 # Install PDO and other PHP extensions
 RUN docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring exif pcntl bcmath gd zip
@@ -29,6 +31,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
+# Copy package files for npm
+COPY package*.json ./
+
+# Install npm dependencies
+RUN npm install
+
 # Copy composer files first
 COPY composer.json composer.lock ./
 
@@ -37,6 +45,9 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 
 # Copy application files
 COPY . /var/www/html
+
+# Build frontend assets
+RUN npm run production
 
 # Run post-autoload-dump scripts
 RUN composer dump-autoload --optimize
@@ -52,7 +63,7 @@ COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose port
