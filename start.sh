@@ -14,10 +14,6 @@ php artisan db:seed --force || echo "Database already seeded"
 echo "🔗 Creating storage link..."
 php artisan storage:link || echo "Storage link already exists"
 
-echo "📦 Creating cache table..."
-php artisan cache:table 2>/dev/null || echo "Cache table already exists"
-php artisan migrate --force
-
 echo "🧹 Clearing caches..."
 php artisan config:clear
 php artisan cache:clear || echo "Cache clear skipped"
