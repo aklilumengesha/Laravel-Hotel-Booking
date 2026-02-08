@@ -18,5 +18,17 @@ echo "🧹 Clearing caches..."
 php artisan config:clear
 php artisan cache:clear
 
-echo "✅ Application ready!"
+echo "⚙️  Caching configuration..."
+php artisan config:cache
+
+echo "🛣️  Caching routes..."
+php artisan route:cache
+
+echo "👁️  Caching views..."
+php artisan view:cache
+
+echo "✅ Application ready! Starting services..."
+
+# Start supervisor
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 

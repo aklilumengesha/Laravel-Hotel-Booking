@@ -5,9 +5,6 @@ set -e
 
 echo "🔨 Starting build process..."
 
-echo "📦 Installing Composer dependencies..."
-composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
 echo "📊 Running database migrations..."
 php artisan migrate --force
 
