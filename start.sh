@@ -18,5 +18,5 @@ echo "🧹 Clearing caches..."
 php artisan config:clear
 php artisan cache:clear
 
-echo "🌐 Starting web server on port ${PORT:-8080}..."
-php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+echo "✅ Application ready!"
+
