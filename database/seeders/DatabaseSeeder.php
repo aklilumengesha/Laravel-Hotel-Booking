@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomSeeder::class);
         $this->call(SettingSeeder::class);
         $this->call(PageSeeder::class);
+        $this->call(FaqSeeder::class);
         $this->call(AdminUserSeeder::class); 
     }
 }
