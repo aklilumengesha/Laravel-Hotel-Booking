@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: hotel-booking
+    name: laravel-hotel-booking
     env: php
     plan: free
     buildCommand: ./build.sh
@@ -29,6 +29,6 @@ services:
 
 databases:
   - name: hotel-booking-db
-    databaseName: hotel_booking
+    databaseName: hotel_booking_eynx
     user: hotel_user
     plan: free
