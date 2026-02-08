@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PostSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(SettingSeeder::class);
+        $this->call(PageSeeder::class);
         $this->call(AdminUserSeeder::class); 
     }
 }
