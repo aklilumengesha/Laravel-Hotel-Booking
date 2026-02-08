@@ -20,7 +20,7 @@
                                         <img src="{{ asset('uploads/'.$item->room->featured_photo) }}" class="card-img-top" alt="{{ $item->room->name }}" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $item->room->name }}</h5>
-                                            <p class="card-text text-primary fw-bold">{{ $item->room->price }} ETB / night</p>
+                                            <p class="card-text text-primary fw-bold">${{ $item->room->price }} / night</p>
                                             <div class="d-flex gap-2">
                                                 <span class="badge bg-secondary"><i class="fas fa-users"></i> {{ $item->room->total_guests ?? $item->room->total_adult }}</span>
                                                 <span class="badge bg-secondary"><i class="fas fa-bed"></i> {{ $item->room->total_beds }}</span>

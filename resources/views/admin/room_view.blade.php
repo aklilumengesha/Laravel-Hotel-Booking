@@ -31,7 +31,7 @@
                                         <img src="{{ asset('uploads/'.$row->featured_photo) }}" alt="" class="w_200">
                                     </td>
                                     <td>{{ $row->name }}</td>
-                                    <td>{{ $row->price }} ETB</td>
+                                    <td>${{ $row->price }}</td>
                                     <td class="pt_10 pb_10">
                                         <button type="button" class="btn btn-warning btn-detail" data-room-id="{{ $row->id }}">Detail</button>
                                         <a href="{{ route('admin.room.gallery',$row->id) }}" class="btn btn-success">Gallery</a>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="form-group row bdb1 pt_10 mb_0">
                     <div class="col-md-4"><label class="form-label">Price (per night)</label></div>
-                    <div class="col-md-8">{{ $row->price }} ETB</div>
+                    <div class="col-md-8">${{ $row->price }}</div>
                 </div>
                 <div class="form-group row bdb1 pt_10 mb_0">
                     <div class="col-md-4"><label class="form-label">Total Rooms</label></div>

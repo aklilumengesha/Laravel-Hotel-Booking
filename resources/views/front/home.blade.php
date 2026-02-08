@@ -594,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="room-image">
                         <img src="{{ asset('uploads/'.$item->featured_photo) }}" alt="{{ $item->name }}" class="img-fluid">
                         <div class="room-badge">
-                            <span class="price-badge">{{ $item->price }} ETB<small>/night</small></span>
+                            <span class="price-badge">${{ $item->price }}<small>/night</small></span>
                         </div>
                         <!-- Like & Favorite Action Buttons -->
                         <div class="room-action-buttons">

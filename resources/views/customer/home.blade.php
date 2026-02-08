@@ -105,7 +105,7 @@
                         <div class="room-mini-card">
                             <div class="room-mini-image">
                                 <img src="{{ asset('uploads/'.$item->room->featured_photo) }}" alt="{{ $item->room->name }}">
-                                <div class="room-mini-price">{{ $item->room->price }} ETB</div>
+                                <div class="room-mini-price">${{ $item->room->price }}</div>
                             </div>
                             <div class="room-mini-content">
                                 <h5 class="room-mini-title">{{ $item->room->name }}</h5>
@@ -154,7 +154,7 @@
                         <div class="room-mini-card">
                             <div class="room-mini-image">
                                 <img src="{{ asset('uploads/'.$item->room->featured_photo) }}" alt="{{ $item->room->name }}">
-                                <div class="room-mini-price">{{ $item->room->price }} ETB</div>
+                                <div class="room-mini-price">${{ $item->room->price }}</div>
                                 <div class="room-mini-badge">
                                     <i class="fas fa-bookmark"></i>
                                 </div>
