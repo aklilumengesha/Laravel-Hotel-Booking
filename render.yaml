@@ -13,7 +13,9 @@ services:
       - key: APP_KEY
         value: base64:1t9Ozn2kf7VlJDyvB9Ngx5IfQqE3XjimjSiNkcmRpXQ=
       - key: APP_DEBUG
-        value: false
+        value: true
+      - key: APP_URL
+        value: https://laravel-hotel-booking-sto3.onrender.com
       - key: DB_CONNECTION
         value: pgsql
       - key: DATABASE_URL
@@ -26,6 +28,8 @@ services:
         value: database
       - key: QUEUE_CONNECTION
         value: sync
+      - key: LOG_CHANNEL
+        value: stderr
 
 databases:
   - name: hotel-booking-db
