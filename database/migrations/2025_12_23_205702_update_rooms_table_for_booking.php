@@ -30,11 +30,24 @@ return new class extends Migration
         DB::statement("UPDATE rooms SET total_rooms = '1' WHERE total_rooms IS NULL OR total_rooms = ''");
         DB::statement("UPDATE rooms SET price = '0' WHERE price IS NULL OR price = ''");
 
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->integer('total_rooms')->default(1)->change();
-            $table->integer('total_guests')->default(2)->nullable()->change();
-            $table->decimal('price', 10, 2)->default(0)->change();
-        });
+        // Change column types with explicit casting for PostgreSQL
+        if ($driver === 'pgsql') {
+            DB::statement("ALTER TABLE rooms ALTER COLUMN total_rooms TYPE INTEGER USING total_rooms::integer");
+            DB::statement("ALTER TABLE rooms ALTER COLUMN total_rooms SET DEFAULT 1");
+            
+            DB::statement("ALTER TABLE rooms ALTER COLUMN total_guests TYPE INTEGER USING total_guests::integer");
+            DB::statement("ALTER TABLE rooms ALTER COLUMN total_guests SET DEFAULT 2");
+            DB::statement("ALTER TABLE rooms ALTER COLUMN total_guests DROP NOT NULL");
+            
+            DB::statement("ALTER TABLE rooms ALTER COLUMN price TYPE NUMERIC(10,2) USING price::numeric(10,2)");
+            DB::statement("ALTER TABLE rooms ALTER COLUMN price SET DEFAULT 0");
+        } else {
+            Schema::table('rooms', function (Blueprint $table) {
+                $table->integer('total_rooms')->default(1)->change();
+                $table->integer('total_guests')->default(2)->nullable()->change();
+                $table->decimal('price', 10, 2)->default(0)->change();
+            });
+        }
     }
 
     public function down()
