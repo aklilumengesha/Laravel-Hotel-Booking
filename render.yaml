@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: hotel-booking
+    env: php
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: ./start.sh
+    envVars:
+      - key: APP_NAME
+        value: Hotel Booking
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        value: base64:1t9Ozn2kf7VlJDyvB9Ngx5IfQqE3XjimjSiNkcmRpXQ=
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hotel-booking-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: sync
+
+databases:
+  - name: hotel-booking-db
+    databaseName: hotel_booking
+    user: hotel_user
+    plan: free
