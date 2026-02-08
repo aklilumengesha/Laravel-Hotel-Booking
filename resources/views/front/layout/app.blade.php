@@ -2948,12 +2948,7 @@
                         <div class="col-md-12 text-center">
                             <div class="copyright-text">
                                 <p>
-                                    {{ $global_setting_data->copyright }}
-                                    @if(strpos($global_setting_data->copyright, 'Aklilu Mengesha') === false)
-                                        | Developed by <a href="mailto:aklilumengesha57@gmail.com" style="color: #4caf50; text-decoration: none;">Aklilu Mengesha</a>
-                                    @else
-                                        {!! str_replace('Aklilu Mengesha', '<a href="mailto:aklilumengesha57@gmail.com" style="color: #4caf50; text-decoration: none;">Aklilu Mengesha</a>', $global_setting_data->copyright) !!}
-                                    @endif
+                                    {!! str_replace('Aklilu Mengesha', '<a href="mailto:aklilumengesha57@gmail.com" style="color: #4caf50; text-decoration: none;">Aklilu Mengesha</a>', $global_setting_data->copyright) !!}
                                 </p>
                             </div>
                         </div>
