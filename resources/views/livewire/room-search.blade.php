@@ -130,20 +130,6 @@
                                 </div>
                             </div>
 
-                            <!-- Interactive Like/Favorite Bar -->
-                            <div class="room-interaction-bar">
-                                <button class="interaction-btn like-interaction" data-room-id="{{ $item->id }}" data-type="like">
-                                    <i class="far fa-heart"></i>
-                                    <span class="interaction-text">Like</span>
-                                    <span class="interaction-count like-count">0</span>
-                                </button>
-                                <button class="interaction-btn favorite-interaction" data-room-id="{{ $item->id }}" data-type="favorite">
-                                    <i class="far fa-bookmark"></i>
-                                    <span class="interaction-text">Save</span>
-                                    <span class="interaction-count favorite-count">0</span>
-                                </button>
-                            </div>
-
                             <div class="room-footer">
                                 <a href="{{ route('room_detail',$item->id) }}" class="book-now-btn">
                                     Book Now <i class="fas fa-arrow-right"></i>
