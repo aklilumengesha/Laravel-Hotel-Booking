@@ -68,7 +68,8 @@
 
     $('.slide-carousel').owlCarousel({
         loop: true,
-        autoplay: false,
+        autoplay: true,
+        autoplayTimeout: 3000,
         autoplayHoverPause: true,
         margin: 0,
         mouseDrag: false,

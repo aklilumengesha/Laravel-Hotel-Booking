@@ -1,1 +1,1 @@
-<script src="{{ asset('dist-front/js/custom.js') }}"></script>
+<script src="{{ asset('dist-front/js/custom.js') }}?v={{ time() }}"></script>
