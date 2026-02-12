@@ -95,15 +95,31 @@ class AdminHomeController extends Controller
 
         // Top Performing Rooms
         try {
-            $top_rooms = DB::table('booked_rooms')
-                ->join('rooms', 'booked_rooms.room_id', '=', 'rooms.id')
-                ->join('orders', 'booked_rooms.order_no', '=', 'orders.order_no')
-                ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('SUM(CAST(orders.paid_amount as DECIMAL(10,2))) as total_revenue'))
-                ->where('orders.status', 'Completed')
-                ->groupBy('rooms.id', 'rooms.name')
-                ->orderBy('bookings_count', 'desc')
-                ->limit(5)
-                ->get();
+            $driver = DB::connection()->getDriverName();
+            
+            if ($driver === 'pgsql') {
+                // PostgreSQL syntax
+                $top_rooms = DB::table('booked_rooms')
+                    ->join('rooms', 'booked_rooms.room_id', '=', 'rooms.id')
+                    ->join('orders', 'booked_rooms.order_no', '=', 'orders.order_no')
+                    ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('SUM(orders.paid_amount::numeric) as total_revenue'))
+                    ->where('orders.status', 'Completed')
+                    ->groupBy('rooms.id', 'rooms.name')
+                    ->orderBy('bookings_count', 'desc')
+                    ->limit(5)
+                    ->get();
+            } else {
+                // MySQL syntax
+                $top_rooms = DB::table('booked_rooms')
+                    ->join('rooms', 'booked_rooms.room_id', '=', 'rooms.id')
+                    ->join('orders', 'booked_rooms.order_no', '=', 'orders.order_no')
+                    ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('SUM(CAST(orders.paid_amount as DECIMAL(10,2))) as total_revenue'))
+                    ->where('orders.status', 'Completed')
+                    ->groupBy('rooms.id', 'rooms.name')
+                    ->orderBy('bookings_count', 'desc')
+                    ->limit(5)
+                    ->get();
+            }
         } catch (\Exception $e) {
             // Fallback if there are no bookings or orders
             $top_rooms = collect([]);
