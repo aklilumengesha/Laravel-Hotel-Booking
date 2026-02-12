@@ -143,6 +143,15 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     // Admin Authenticated Routes
     Route::middleware('admin:admin')->group(function(){
+        // Test route to diagnose issue
+        Route::get('/test', function() {
+            return response()->json([
+                'status' => 'Middleware works',
+                'auth' => auth('admin')->check(),
+                'user' => auth('admin')->user()
+            ]);
+        })->name('test');
+        
         Route::get('/home', [AdminHomeController::class, 'index'])->name('home');
         Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile');
         Route::post('/profile', [AdminProfileController::class, 'update'])->name('profile.update');

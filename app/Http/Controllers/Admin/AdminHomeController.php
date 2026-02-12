@@ -15,6 +15,10 @@ class AdminHomeController extends Controller
 {
     public function index()
     {
+        // Temporary: Return simple response to test if controller works
+        return response('Admin dashboard loaded successfully. Controller is working.');
+        
+        /* Original code commented out for debugging
         try {
             // Basic Statistics
             $total_completed_orders = Order::where('status','Completed')->count();
