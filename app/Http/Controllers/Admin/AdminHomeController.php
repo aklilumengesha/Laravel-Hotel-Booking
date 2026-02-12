@@ -15,10 +15,6 @@ class AdminHomeController extends Controller
 {
     public function index()
     {
-        // Temporary: Return simple response to test if controller works
-        return response('Admin dashboard loaded successfully. Controller is working.');
-        
-        /* Original code commented out for debugging
         try {
             // Basic Statistics
             $total_completed_orders = Order::where('status','Completed')->count();
@@ -29,15 +25,15 @@ class AdminHomeController extends Controller
             $total_subscribers = Subscriber::where('status',1)->count();
 
             // Revenue Statistics
-            $total_revenue = Order::where('status','Completed')->sum('paid_amount');
+            $total_revenue = Order::where('status','Completed')->sum('paid_amount') ?? 0;
             $monthly_revenue = Order::where('status','Completed')
                 ->whereMonth('created_at', Carbon::now()->month)
                 ->whereYear('created_at', Carbon::now()->year)
-                ->sum('paid_amount');
+                ->sum('paid_amount') ?? 0;
             
             $today_revenue = Order::where('status','Completed')
                 ->whereDate('created_at', Carbon::today())
-                ->sum('paid_amount');
+                ->sum('paid_amount') ?? 0;
 
             // Monthly Orders Chart Data (Last 12 months)
             $monthly_orders = [];
@@ -53,7 +49,7 @@ class AdminHomeController extends Controller
                 $revenue_amount = Order::where('status','Completed')
                     ->whereMonth('created_at', $date->month)
                     ->whereYear('created_at', $date->year)
-                    ->sum('paid_amount');
+                    ->sum('paid_amount') ?? 0;
                 
                 $monthly_orders[] = [
                     'month' => $month_name,
@@ -66,7 +62,7 @@ class AdminHomeController extends Controller
                 ];
             }
 
-            // Room Occupancy Data (simplified to avoid complex relationships)
+            // Room Occupancy Data
             $room_occupancy = Room::select('name', 'id')->get()->map(function($room) {
                 $bookings_count = DB::table('booked_rooms')
                     ->where('room_id', $room->id)
@@ -96,29 +92,28 @@ class AdminHomeController extends Controller
             }
 
             // Recent Orders
-            $orders = Order::with('customer')->orderBy('id','desc')->skip(0)->take(5)->get();
+            $orders = Order::with('customer')->orderBy('id','desc')->limit(5)->get();
 
             // Top Performing Rooms
+            $top_rooms = collect([]);
             try {
                 $driver = DB::connection()->getDriverName();
                 
                 if ($driver === 'pgsql') {
-                    // PostgreSQL syntax
                     $top_rooms = DB::table('booked_rooms')
                         ->join('rooms', 'booked_rooms.room_id', '=', 'rooms.id')
                         ->join('orders', 'booked_rooms.order_no', '=', 'orders.order_no')
-                        ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('SUM(orders.paid_amount::numeric) as total_revenue'))
+                        ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('COALESCE(SUM(orders.paid_amount::numeric), 0) as total_revenue'))
                         ->where('orders.status', 'Completed')
                         ->groupBy('rooms.id', 'rooms.name')
                         ->orderBy('bookings_count', 'desc')
                         ->limit(5)
                         ->get();
                 } else {
-                    // MySQL syntax
                     $top_rooms = DB::table('booked_rooms')
                         ->join('rooms', 'booked_rooms.room_id', '=', 'rooms.id')
                         ->join('orders', 'booked_rooms.order_no', '=', 'orders.order_no')
-                        ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('SUM(CAST(orders.paid_amount as DECIMAL(10,2))) as total_revenue'))
+                        ->select('rooms.name', DB::raw('COUNT(DISTINCT booked_rooms.id) as bookings_count'), DB::raw('COALESCE(SUM(CAST(orders.paid_amount as DECIMAL(10,2))), 0) as total_revenue'))
                         ->where('orders.status', 'Completed')
                         ->groupBy('rooms.id', 'rooms.name')
                         ->orderBy('bookings_count', 'desc')
@@ -126,8 +121,6 @@ class AdminHomeController extends Controller
                         ->get();
                 }
             } catch (\Exception $e) {
-                // Fallback if there are no bookings or orders
-                $top_rooms = collect([]);
                 \Log::error('Top rooms query failed: ' . $e->getMessage());
             }
 
@@ -146,19 +139,7 @@ class AdminHomeController extends Controller
             ));
         } catch (\Exception $e) {
             \Log::error('Admin home error: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
-            
-            // Return error details when debug is on
-            if (config('app.debug')) {
-                dd([
-                    'error' => $e->getMessage(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-            }
-            
-            abort(500, 'Error loading admin dashboard');
+            return response('Error: ' . $e->getMessage(), 500);
         }
     }
 }
