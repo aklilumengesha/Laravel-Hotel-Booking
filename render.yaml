@@ -16,6 +16,8 @@ services:
         value: true
       - key: APP_URL
         value: https://laravel-hotel-booking-sto3.onrender.com
+      - key: ASSET_URL
+        value: https://laravel-hotel-booking-sto3.onrender.com
       - key: DB_CONNECTION
         value: pgsql
       - key: DATABASE_URL
