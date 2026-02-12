@@ -25,15 +25,36 @@ class AdminHomeController extends Controller
             $total_subscribers = Subscriber::where('status',1)->count();
 
             // Revenue Statistics
-            $total_revenue = Order::where('status','Completed')->sum('paid_amount') ?? 0;
-            $monthly_revenue = Order::where('status','Completed')
-                ->whereMonth('created_at', Carbon::now()->month)
-                ->whereYear('created_at', Carbon::now()->year)
-                ->sum('paid_amount') ?? 0;
+            $driver = DB::connection()->getDriverName();
             
-            $today_revenue = Order::where('status','Completed')
-                ->whereDate('created_at', Carbon::today())
-                ->sum('paid_amount') ?? 0;
+            if ($driver === 'pgsql') {
+                // PostgreSQL - cast text to numeric
+                $total_revenue = Order::where('status','Completed')
+                    ->selectRaw('COALESCE(SUM(paid_amount::numeric), 0) as total')
+                    ->value('total') ?? 0;
+                    
+                $monthly_revenue = Order::where('status','Completed')
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->selectRaw('COALESCE(SUM(paid_amount::numeric), 0) as total')
+                    ->value('total') ?? 0;
+                
+                $today_revenue = Order::where('status','Completed')
+                    ->whereDate('created_at', Carbon::today())
+                    ->selectRaw('COALESCE(SUM(paid_amount::numeric), 0) as total')
+                    ->value('total') ?? 0;
+            } else {
+                // MySQL
+                $total_revenue = Order::where('status','Completed')->sum('paid_amount') ?? 0;
+                $monthly_revenue = Order::where('status','Completed')
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->sum('paid_amount') ?? 0;
+                
+                $today_revenue = Order::where('status','Completed')
+                    ->whereDate('created_at', Carbon::today())
+                    ->sum('paid_amount') ?? 0;
+            }
 
             // Monthly Orders Chart Data (Last 12 months)
             $monthly_orders = [];
@@ -46,10 +67,18 @@ class AdminHomeController extends Controller
                     ->whereYear('created_at', $date->year)
                     ->count();
                 
-                $revenue_amount = Order::where('status','Completed')
-                    ->whereMonth('created_at', $date->month)
-                    ->whereYear('created_at', $date->year)
-                    ->sum('paid_amount') ?? 0;
+                if ($driver === 'pgsql') {
+                    $revenue_amount = Order::where('status','Completed')
+                        ->whereMonth('created_at', $date->month)
+                        ->whereYear('created_at', $date->year)
+                        ->selectRaw('COALESCE(SUM(paid_amount::numeric), 0) as total')
+                        ->value('total') ?? 0;
+                } else {
+                    $revenue_amount = Order::where('status','Completed')
+                        ->whereMonth('created_at', $date->month)
+                        ->whereYear('created_at', $date->year)
+                        ->sum('paid_amount') ?? 0;
+                }
                 
                 $monthly_orders[] = [
                     'month' => $month_name,
