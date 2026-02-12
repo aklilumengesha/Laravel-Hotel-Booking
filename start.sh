@@ -14,6 +14,10 @@ php artisan db:seed --force || echo "Database already seeded"
 echo "🔗 Creating storage link..."
 php artisan storage:link || echo "Storage link already exists"
 
+echo "🔐 Setting proper permissions..."
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 echo "🧹 Clearing caches..."
 php artisan config:clear
 php artisan cache:clear || echo "Cache clear skipped"
