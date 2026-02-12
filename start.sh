@@ -20,16 +20,9 @@ chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 echo "🧹 Clearing caches..."
 php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 php artisan cache:clear || echo "Cache clear skipped"
-
-echo "⚙️  Caching configuration..."
-php artisan config:cache
-
-echo "🛣️  Caching routes..."
-php artisan route:cache
-
-echo "👁️  Caching views..."
-php artisan view:cache
 
 echo "✅ Application ready! Starting services..."
 
