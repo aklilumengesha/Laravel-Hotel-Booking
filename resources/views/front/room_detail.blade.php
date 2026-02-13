@@ -125,8 +125,13 @@
                     <div class="amenities-grid">
                         @php
                         $arr = explode(',', $single_room_data->amenities);
-                        foreach ($arr as $amenity_id) {
-                            $temp_row = \App\Models\Amenity::find(trim($amenity_id));
+                        foreach ($arr as $amenity_item) {
+                            $amenity_item = trim($amenity_item);
+                            if(is_numeric($amenity_item)) {
+                                $temp_row = \App\Models\Amenity::find($amenity_item);
+                            } else {
+                                $temp_row = \App\Models\Amenity::where('name', $amenity_item)->first();
+                            }
                             if ($temp_row) {
                                 echo '<div class="amenity-item">';
                                 echo '<i class="fas fa-check-circle"></i>';

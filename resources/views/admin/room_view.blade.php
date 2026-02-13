@@ -93,8 +93,13 @@
                         @if($row->amenities)
                             @php
                                 $arr = explode(',', $row->amenities);
-                                foreach ($arr as $amenity_id) {
-                                    $temp_row = \App\Models\Amenity::find(trim($amenity_id));
+                                foreach ($arr as $amenity_item) {
+                                    $amenity_item = trim($amenity_item);
+                                    if(is_numeric($amenity_item)) {
+                                        $temp_row = \App\Models\Amenity::find($amenity_item);
+                                    } else {
+                                        $temp_row = \App\Models\Amenity::where('name', $amenity_item)->first();
+                                    }
                                     if ($temp_row) {
                                         echo '<span class="badge badge-info mr-1 mb-1">' . e($temp_row->name) . '</span>';
                                     }

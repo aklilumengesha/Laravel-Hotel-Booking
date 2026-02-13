@@ -134,13 +134,19 @@
                                                             <div class="room-amenities">
                                                                 @if($room->amenities)
                                                                     @php
-                                                                        $amenityIds = explode(',', $room->amenities);
+                                                                        $amenityNames = explode(',', $room->amenities);
                                                                         $amenityCount = 0;
                                                                     @endphp
-                                                                    @foreach($amenityIds as $amenityId)
+                                                                    @foreach($amenityNames as $amenityName)
                                                                         @if($amenityCount < 3)
                                                                             @php
-                                                                                $amenity = \App\Models\Amenity::find(trim($amenityId));
+                                                                                $amenityName = trim($amenityName);
+                                                                                // Check if it's numeric (ID) or string (name)
+                                                                                if(is_numeric($amenityName)) {
+                                                                                    $amenity = \App\Models\Amenity::find($amenityName);
+                                                                                } else {
+                                                                                    $amenity = \App\Models\Amenity::where('name', $amenityName)->first();
+                                                                                }
                                                                                 if($amenity) $amenityCount++;
                                                                             @endphp
                                                                             @if($amenity)
