@@ -13,6 +13,11 @@ class RoomSeeder extends Seeder
      */
     public function run(): void
     {
+        // Only create if no rooms exist
+        if (Room::count() > 0) {
+            return;
+        }
+
         Room::create([
             'name' => 'Standard Room',
             'description' => 'A comfortable room with all basic amenities.',
@@ -22,7 +27,7 @@ class RoomSeeder extends Seeder
             'size' => '25 sq meters',
             'bed' => '1 King Bed',
             'bath' => '1 Bathroom',
-            'featured_photo' => '3.jpg' // Place dummy images here too
+            'featured_photo' => '3.jpg'
         ]);
 
         Room::create([
@@ -36,6 +41,5 @@ class RoomSeeder extends Seeder
             'bath' => '2 Bathrooms',
             'featured_photo' => '4.jpg'
         ]);
-        // Add more rooms
     }
 }
